@@ -43,7 +43,7 @@
     gap:28px;text-align:center;padding:24px;z-index:50;
   }
   .logo-start{height:58px;width:auto;margin-bottom:10px;opacity:.97}
-  .logo-bar{height:22px;width:auto;opacity:.92}
+  .logo-bar{height:34px;width:auto;opacity:.95}
   #start .kicker{
     font-family:var(--font-display);font-size:11px;letter-spacing:.34em;text-transform:uppercase;
     color:var(--amber);
@@ -120,6 +120,13 @@
   }
   #stage.revealed .hotspot{border-color:rgba(217,168,60,.45)}
   .hotspot:hover,.hotspot:focus-visible{background:var(--amber-soft);border-color:var(--amber);border-style:solid}
+  .hotspot .arrow{
+    position:absolute;left:calc(100% + 8px);top:50%;transform:translateY(-50%) translateX(-6px);
+    color:#28E5FF;font-size:20px;opacity:0;transition:opacity .35s,transform .35s;pointer-events:none;
+    filter:drop-shadow(0 0 6px rgba(40,229,255,.6));
+  }
+  .hotspot .arrow.show{opacity:1;transform:translateY(-50%) translateX(0);animation:arrowNudge 1s ease infinite}
+  @keyframes arrowNudge{0%,100%{transform:translateY(-50%) translateX(0)}50%{transform:translateY(-50%) translateX(-5px)}}
   .hotspot.lit{
     background:var(--amber-soft);border-color:var(--amber);border-style:solid;
     box-shadow:0 0 18px rgba(217,168,60,.35), inset 0 0 14px rgba(217,168,60,.12);
@@ -161,6 +168,27 @@
     #caption{right:auto;left:50%;top:auto;bottom:26px;transform:translateX(-50%);width:min(720px,86%);height:auto;min-height:0;max-height:38vh}
   }
   #caption.show{opacity:1}
+
+  /* intro panel — right side, replaces static text */
+  #introPanel{
+    position:absolute;left:44%;top:50%;transform:translateY(-50%);
+    width:min(420px,38%);background:rgba(16,18,24,.96);border:1px solid var(--line);
+    border-left:3px solid var(--accent,#28E5FF);border-radius:14px;padding:28px 30px;
+    box-shadow:var(--shadow);opacity:0;transition:opacity .5s;pointer-events:auto;
+  }
+  #introPanel.show{opacity:1}
+  #introPanel .ip-kicker{font-family:var(--font-display);font-size:9px;letter-spacing:.3em;text-transform:uppercase;color:#28E5FF;margin-bottom:6px}
+  #introPanel .ip-title{font-family:var(--font-display);font-weight:600;font-size:26px;margin-bottom:14px;letter-spacing:.02em}
+  #introPanel .ip-lead{font-family:var(--font-display);font-size:15px;font-weight:500;letter-spacing:.04em;line-height:1.4;color:#9aa3b2;margin-bottom:20px;min-height:24px}
+  #introPanel .ip-section{font-family:var(--font-display);font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:#9aa3b2;margin-bottom:9px}
+  #introPanel .ip-modules{list-style:none;margin:0 0 16px;padding:0;display:flex;flex-direction:column;gap:7px}
+  #introPanel .ip-modules li{display:flex;align-items:center;gap:11px;font-family:var(--font-info);font-size:14px;color:#dfe3ea;opacity:.5;transition:opacity .3s,color .3s}
+  #introPanel .ip-modules li.lit{opacity:1;color:#fff}
+  #introPanel .ip-num{display:flex;align-items:center;justify-content:center;width:21px;height:21px;border-radius:50%;background:rgba(40,229,255,.14);color:#28E5FF;font-size:11px;font-weight:700;flex-shrink:0}
+  #introPanel .ip-modules li.lit .ip-num{background:#28E5FF;color:#0c0e12}
+  #introPanel .ip-template{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:700;color:#28E5FF;text-decoration:none;border:1px solid rgba(40,229,255,.4);border-radius:9px;padding:11px 16px;transition:all .15s}
+  #introPanel .ip-template:hover{background:rgba(40,229,255,.12);transform:translateY(-1px)}
+  @media (max-width:900px){ #introPanel{display:none} }
   #caption .who{
     display:block;font-family:var(--font-display);font-size:9px;letter-spacing:.3em;
     text-transform:uppercase;color:var(--amber);margin-bottom:6px;
@@ -220,7 +248,21 @@
   .bullet.active .b-text{color:#eef0f4}
   .bullet .cursor{display:inline-block;width:2px;height:13px;background:#d9a83c;margin-left:2px;vertical-align:middle;animation:blink .7s infinite}
   @keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
-  @keyframes barBounce{0%,100%{height:4px}50%{height:14px}}
+  .solo-btn{margin-left:auto;flex-shrink:0;display:inline-flex;align-items:center;gap:5px;font-family:var(--font-display);font-size:10px;font-weight:600;letter-spacing:.06em;color:#28E5FF;background:rgba(40,229,255,.1);border:1px solid rgba(40,229,255,.35);border-radius:7px;padding:4px 10px;cursor:pointer;transition:all .15s}
+  .solo-btn:hover{background:rgba(40,229,255,.2)}
+  .solo-btn.playing{background:#28E5FF;color:#0c0e12;border-color:#28E5FF}
+  .solo-btn .solo-ic{font-size:9px}
+  @keyframes barBounce{0%,100%{height:5px}50%{height:20px}}
+  #audioBadge{display:flex;align-items:center;gap:11px;padding:11px 15px;margin-bottom:13px;background:rgba(255,255,255,.03);border:1px solid var(--line);border-radius:10px;transition:background .3s,box-shadow .3s,border-color .3s}
+  #audioBadge.active{background:linear-gradient(135deg,rgba(40,229,255,.18),rgba(40,229,255,.07));border-color:rgba(40,229,255,.7);box-shadow:0 0 22px rgba(40,229,255,.3)}
+  #audioBadge .ab-bars{display:flex;gap:3px;align-items:center;height:22px}
+  #audioBadge .ab-bar{width:4px;height:6px;border-radius:2px;background:#5a626f;transition:background .3s}
+  #audioBadge.active .ab-bar{background:#28E5FF;animation:barBounce .55s ease infinite}
+  #audioBadge.active .ab-bar:nth-child(2){animation-delay:.12s}
+  #audioBadge.active .ab-bar:nth-child(3){animation-delay:.24s}
+  #audioBadge.active .ab-bar:nth-child(4){animation-delay:.36s}
+  #audioBadge .ab-label{font-family:var(--font-display);font-size:11px;letter-spacing:.08em;color:#9aa3b2;font-weight:600;transition:color .3s}
+  #audioBadge.active .ab-label{color:#28E5FF}
 
 
   /* ---------- LIVE DEMO PANEL ---------- */
@@ -390,6 +432,22 @@
       <div id="spot"><span class="tag">Channel 5 · Pads</span></div>
       <!-- hotspots injected by JS -->
       <div id="caption"><span class="who">Narrator</span><span id="captionText"></span></div>
+      <div id="introPanel">
+        <div class="ip-kicker">This lesson</div>
+        <h3 class="ip-title">The Channel Strip</h3>
+        <p class="ip-lead" id="ipLead"></p>
+        <div class="ip-section">Modules you'll explore</div>
+        <ul class="ip-modules">
+          <li data-mod="gain"><span class="ip-num">1</span>Gain &amp; Filter</li>
+          <li data-mod="compressor"><span class="ip-num">2</span>Compressor</li>
+          <li data-mod="eq"><span class="ip-num">3</span>Equalizer</li>
+          <li data-mod="fx"><span class="ip-num">4</span>FX Sends</li>
+          <li data-mod="volume"><span class="ip-num">5</span>Volume &amp; Pan</li>
+        </ul>
+        <a class="ip-template" href="https://www.audiotool.com/studio?project=a668e975-f404-4f72-bb4a-539dede6beef&template=c2316b42-a6b9-46f9-ad8f-8f200f88bc3e" target="_blank" rel="noopener">
+          <i class="ti ti-external-link"></i> Open the practice template
+        </a>
+      </div>
     </div>
   </div>
 </div>
@@ -409,7 +467,7 @@
       <div id="cardKicker"></div>
       <div id="cardTitle"></div>
       <div id="bulletList"></div>
-      <div id="demoPanel" style="display:none"><h5>Hear it, on the loop</h5><p class="dhint" id="demoStatus" style="margin:0 0 10px;font-size:12.5px;min-height:38px"></p><button class="dtog" id="demoReplay" onclick="replayDemo()">↻ Replay sound demo</button></div>
+      <div id="demoPanel" style="display:none"><div id="audioBadge"><span class="ab-bars"><span class="ab-bar"></span><span class="ab-bar"></span><span class="ab-bar"></span><span class="ab-bar"></span></span><span class="ab-label">Sound demo on loop</span></div><p class="dhint" id="demoStatus" style="margin:0 0 10px;font-size:12.5px;min-height:38px"></p><button class="dtog" id="demoReplay" onclick="replayDemo()">↻ Replay sound demo</button></div>
       <div id="cardNav">
         <button class="nav-btn" id="btnPrev" onclick="step(-1)">← Prev</button>
         <button class="nav-btn primary" id="btnNext" onclick="step(1)">Next module →</button>
@@ -539,11 +597,47 @@ const INTRO_CUES = [
   { t: 6.7,  i: 2 },   // "Equalizer"
   { t: 7.7,  i: 3 },   // "FX Sends"
   { t: 8.8,  i: 4 },   // "...Volume and Pan"
-  { t: 11.2, i: -1 }   // "The signal flows..." → fade all
+  { t: 11.2, i: -1 },  // "The signal flows..." → fade all
+  { t: 12.4, i: -3 },  // "from the top to the bottom" → flowing sweep
+  { t: 14.5, i: -2 }   // "click each one" → show arrows
 ];
 let cueTimer = null, firedCues = new Set();
 
 function lightUp(i){ document.getElementById("hs-"+SCENES[i].id).classList.add("lit"); }
+const IP_LEAD_TEXT = "Five modules, one signal path.";
+let ipLeadTimer = null;
+function showArrows(){ if(mode==="cinema") return; document.querySelectorAll(".hotspot .arrow").forEach(a=>a.classList.add("show")); }
+function hideArrows(){ document.querySelectorAll(".hotspot .arrow").forEach(a=>a.classList.remove("show")); }
+function sweepModules(){
+  // flowing top-to-bottom light-up
+  clearLit();
+  SCENES.forEach((s,idx)=>{
+    setTimeout(()=>{
+      const el=document.getElementById("hs-"+s.id);
+      if(el){ el.classList.add("lit"); litIntroModule(idx); }
+    }, idx*260);
+  });
+}
+function showIntroPanel(){
+  const p=document.getElementById("introPanel");
+  if(!p) return;
+  p.classList.add("show");
+  /* typewriter the lead */
+  const el=document.getElementById("ipLead");
+  if(el){
+    clearInterval(ipLeadTimer);
+    let pos=0; el.textContent="";
+    ipLeadTimer=setInterval(()=>{
+      if(pos>=IP_LEAD_TEXT.length){ clearInterval(ipLeadTimer); return; }
+      el.textContent=IP_LEAD_TEXT.slice(0,++pos);
+    }, 18);
+  }
+}
+function hideIntroPanel(){ const p=document.getElementById("introPanel"); if(p) p.classList.remove("show"); clearInterval(ipLeadTimer); }
+function litIntroModule(i){
+  const items=document.querySelectorAll("#introPanel .ip-modules li");
+  if(items[i]) items[i].classList.add("lit");
+}
 function clearLit(){ SCENES.forEach(s=>document.getElementById("hs-"+s.id).classList.remove("lit")); }
 function startCueWatch(){
   stopCueWatch();
@@ -553,12 +647,15 @@ function startCueWatch(){
     INTRO_CUES.forEach((c,idx)=>{
       if(!firedCues.has(idx) && t >= c.t){
         firedCues.add(idx);
-        if(c.i < 0) clearLit(); else lightUp(c.i);
+        if(c.i === -2){ showArrows(); }
+        else if(c.i === -3){ sweepModules(); }
+        else if(c.i < 0){ clearLit(); }
+        else { lightUp(c.i); litIntroModule(c.i); }
       }
     });
   }, 80);
 }
-function stopCueWatch(){ clearInterval(cueTimer); cueTimer = null; clearLit(); }
+function stopCueWatch(){ clearInterval(cueTimer); cueTimer = null; clearLit(); hideArrows(); }
 
 /* ---- in-card control markers, synced to the scene's voiceover ---- */
 let markTimer = null;
@@ -694,7 +791,7 @@ function buildHotspots(){
     el.style.top    = s.zone.top + "%";
     el.style.height = s.zone.height + "%";
     el.setAttribute("aria-label", s.title);
-    el.innerHTML = `<span class="dot"></span><span class="hlabel">${s.title}</span>`;
+    el.innerHTML = `<span class="dot"></span><span class="hlabel">${s.title}</span><span class="arrow">◄</span>`;
     el.onclick = ()=>{
       if(mode!=="explore") return;
       if(s.id==="fx" && !fxView){
@@ -740,21 +837,22 @@ function startExplore(){
   document.getElementById("modeSwitch").textContent = "▶ Switch to Cinema";
   setTimeout(()=>document.getElementById("stage").classList.add("revealed"), 350);
   setTimeout(centerChannel, 120);
+  showIntroPanel();
   if(INTRO_AUDIO){
     audioDriven = true;
-    caption(INTRO + " Click each one to see what it does.");
     voicePlayer.src = INTRO_AUDIO;
-    voicePlayer.onended = ()=>{ hideCaption(); audioDriven = false; stopCueWatch(); };
+    voicePlayer.onended = ()=>{ audioDriven = false; stopCueWatch(); };
     voicePlayer.play().catch(()=>{});
     startCueWatch();
   } else {
-    caption(INTRO + " Click each module to see what it does.", 9000);
+    /* intro panel carries the text */
   }
   refreshProgress();
 }
 
 function openScene(i){
-  voicePlayer.pause(); voicePlayer.onended = null; hideCaption(); stopCueWatch();
+  voicePlayer.pause(); voicePlayer.onended = null; hideCaption(); stopCueWatch(); hideIntroPanel();
+  endSolo();
   resetChainNeutral();
   setFxView(SCENES[i].id === "fx");
   current = i;
@@ -781,6 +879,7 @@ function openScene(i){
 function closeCard(){
   document.getElementById("overlay").classList.remove("open");
   voicePlayer.pause();
+  endSolo();
   stopBullets();
   setFxView(false);
   stopMarks();
@@ -951,7 +1050,8 @@ function updatePlayBtn(){
 /* ===================== RESET ===================== */
 function resetAll(){
   stopClock(); stopCueWatch(); voicePlayer.pause(); voicePlayer.onended = null;
-  setFxView(false);
+  setFxView(false); hideIntroPanel();
+  document.querySelectorAll("#introPanel .ip-modules li").forEach(li=>li.classList.remove("lit"));
   if(actx){ resetChainNeutral(); actx.suspend(); }
   visited = new Set(); current = -1; playing = false;
   document.getElementById("doneBanner").classList.remove("show");
@@ -978,20 +1078,26 @@ document.getElementById("overlay").addEventListener("click", e=>{
   if(e.target.id==="overlay" && mode==="explore") closeCard();
 });
 
-const BULLETS = {"gain": [{"t": 0, "text": "Gain knob — input level, up to +18 dB"}, {"t": 8.17, "text": "Hear it: gain drops 14 dB"}, {"t": 10.12, "text": "Pushed above 0 — then back to unity"}, {"t": 15.0, "text": "Phase switch — inverts the signal polarity"}, {"t": 18.46, "text": "Hear it: phase cancel, then restored"}, {"t": 22.5, "text": "Low-pass filter — rolls off the highs"}, {"t": 26.38, "text": "High-pass filter — removes the low end"}, {"t": 31.8, "text": "On/off only bypasses the filter — gain always active"}], "compressor": [{"t": 0, "text": "Threshold — where compression begins"}, {"t": 4.03, "text": "Hear it: threshold brings the level down"}, {"t": 6.2, "text": "Ratio — how hard it compresses above threshold"}, {"t": 7.05, "text": "Hear it: high ratio, heavy squash"}, {"t": 10.0, "text": "Attack — how fast compression kicks in"}, {"t": 11.06, "text": "Hear it: fast attack flattens transients"}, {"t": 12.88, "text": "Hear it: slow release creates pumping"}, {"t": 14.7, "text": "Makeup gain — restore level after compression"}, {"t": 16.11, "text": "Hear it: makeup brings volume back"}, {"t": 27.29, "text": "Sidechain — kick drum triggers the ducking"}], "eq": [{"t": 0, "text": "Four bands — each shapes a frequency range"}, {"t": 9.48, "text": "Hear it: Band 1 (60 Hz) — sub bass"}, {"t": 12.33, "text": "Hear it: Band 2 (500 Hz) — midrange mud"}, {"t": 15.43, "text": "Hear it: Band 3 (4.8 kHz) — presence"}, {"t": 18.0, "text": "Cut before you boost — cleaner results"}], "fx": [{"t": 0, "text": "Sends are parallel — dry signal stays intact"}, {"t": 13.77, "text": "Hear it: reverb adds space and depth"}, {"t": 15.11, "text": "Hear it: delay — tempo-synced echoes"}, {"t": 17.75, "text": "Hear it: flanger — comb-filter sweep"}, {"t": 20.38, "text": "Hear it: BitCrusher — lo-fi crunch"}, {"t": 22.0, "text": "Custom sends from Stagebox appear here too"}], "volume": [{"t": 0, "text": "Fader — final output level of the channel"}, {"t": 5.47, "text": "Hear it: volume down, then back up"}, {"t": 8.0, "text": "Pan — places the signal in the stereo field"}, {"t": 8.26, "text": "Hear it: panning left to right"}, {"t": 11.8, "text": "Mute = silence. Solo = hear this alone."}]};
+const BULLETS = {"gain": [{"t": 0, "text": "Gain knob — input level, up to +18 dB"}, {"t": 8.17, "text": "Hear it: gain drops 14 dB"}, {"t": 10.12, "text": "Pushed above 0 — then back to unity"}, {"t": 15.0, "text": "Phase switch — inverts the signal polarity"}, {"t": 18.46, "text": "Hear it: identical + inverted = silence"}, {"t": 22.5, "text": "Hear it: low-pass rolls off the highs"}, {"t": 26.38, "text": "Hear it: high-pass removes the lows"}, {"t": 31.8, "text": "On/off only bypasses the filter — gain always active"}], "compressor": [{"t": 0, "text": "Threshold — where compression begins"}, {"t": 4.03, "text": "Hear it: threshold brings the level down"}, {"t": 6.2, "text": "Ratio — how hard it compresses above threshold"}, {"t": 7.05, "text": "Hear it: high ratio, heavy squash"}, {"t": 10.0, "text": "Attack — how fast compression kicks in"}, {"t": 11.06, "text": "Hear it: fast attack flattens transients"}, {"t": 12.88, "text": "Hear it: slow release creates pumping"}, {"t": 14.7, "text": "Makeup gain — restore level after compression"}, {"t": 16.11, "text": "Hear it: makeup brings volume back"}, {"t": 27.29, "text": "Sidechain — kick drum triggers the ducking"}], "eq": [{"t": 0, "text": "Four bands — each shapes a frequency range"}, {"t": 9.48, "text": "Hear it: Band 1 (60 Hz) — sub bass"}, {"t": 12.33, "text": "Hear it: Band 2 (500 Hz) — midrange mud"}, {"t": 15.43, "text": "Hear it: Band 3 (4.8 kHz) — presence"}, {"t": 18.0, "text": "Cut before you boost — cleaner results"}], "fx": [{"t": 0, "text": "Sends are parallel — dry signal stays intact"}, {"t": 13.77, "text": "Hear it: reverb adds space and depth"}, {"t": 15.11, "text": "Hear it: delay — tempo-synced echoes"}, {"t": 17.75, "text": "Hear it: flanger — comb-filter sweep"}, {"t": 20.38, "text": "Hear it: BitCrusher — lo-fi crunch"}, {"t": 22.0, "text": "Custom sends from Stagebox appear here too"}], "volume": [{"t": 0, "text": "Fader — final output level of the channel"}, {"t": 5.47, "text": "Hear it: volume down, then back up"}, {"t": 8.0, "text": "Pan — places the signal in the stereo field"}, {"t": 8.26, "text": "Hear it: panning left to right"}, {"t": 11.8, "text": "Mute = silence. Solo = hear this alone."}]};
 let bulletTimers = [], twTimers = [], activeBulletIdx = -1;
+const SOLO_FNS = {"gain": {"1": "soloRamp(N.gainKnob.gain, dB2lin(-14), 1, ()=>ramp(N.gainKnob.gain,1,.4))", "4": "soloPhase()", "5": "soloLP()", "6": "soloHP()"}, "compressor": {"1": "soloComp(-50,20,.003,.25,12)", "3": "soloComp(-55,20,.0005,.9,18)", "5": "soloComp(-50,20,.0005,.9,20)", "6": "soloComp(-50,20,.0005,.9,20)", "8": "soloComp(-50,20,.003,.25,20)"}, "eq": {"1": "soloEQ(0,-30)", "2": "soloEQ(1,-30)", "3": "soloEQ(2,24)"}, "fx": {"1": "soloSend(N.revSend.gain,.9)", "2": "soloSend(N.dlySend.gain,.75)", "3": "soloFlanger()", "4": "soloCrusher()"}, "volume": {"1": "soloRamp(N.chVol.gain, dB2lin(-16), 1, ()=>ramp(N.chVol.gain,1,.4))", "3": "soloPan()"}};
+let soloActive = false, soloKey = null, currentSceneId = null;
 
 function buildBullets(scene){
+  currentSceneId = scene.id;
   bulletTimers.forEach(clearTimeout); bulletTimers = [];
   twTimers.forEach(clearInterval); twTimers = [];
   activeBulletIdx = -1;
   const list = document.getElementById('bulletList');
   list.innerHTML = '';
   const bs = BULLETS[scene.id] || [];
+  const soloMap = SOLO_FNS[scene.id] || {};
   bs.forEach((b,i)=>{
     const div = document.createElement('div');
     div.className = 'bullet'; div.id = 'b'+i;
-    div.innerHTML = `<span class="b-dot"></span><span class="b-text"></span>`;
+    const hasSolo = soloMap[i] !== undefined && mode !== "cinema";
+    div.innerHTML = `<span class="b-dot"></span><span class="b-text"></span>` +
+      (hasSolo ? `<button class="solo-btn" id="solo-${scene.id}-${i}" onclick="toggleSolo('${scene.id}',${i})" title="Listen to just this effect"><span class="solo-ic">▶</span> Solo</button>` : '');
     list.appendChild(div);
   });
   // schedule each bullet to appear and typewrite
@@ -1033,6 +1139,143 @@ function showBullet(i, text, allBullets){
 function stopBullets(){
   bulletTimers.forEach(clearTimeout); bulletTimers=[];
   twTimers.forEach(clearInterval); twTimers=[];
+  endSolo(false);
+}
+
+/* ---- Solo listening: pause voice, isolate one effect on the loop ---- */
+let soloResetFn = null;
+function toggleSolo(sceneId, i){
+  const btn = document.getElementById('solo-'+sceneId+'-'+i);
+  if(soloActive && soloKey === sceneId+'-'+i){
+    endSolo(true);   // resume voiceover
+    return;
+  }
+  // end any previous solo (no resume — we are starting another)
+  endSolo(false);
+  soloActive = true; soloKey = sceneId+'-'+i;
+  // pause the voiceover
+  voicePlayer.pause();
+  // pause the bullet timeline so nothing advances underneath
+  bulletTimers.forEach(clearTimeout); bulletTimers=[];
+  twTimers.forEach(clearInterval); twTimers=[];
+  // mark button active
+  if(btn){ btn.classList.add('playing'); btn.querySelector('.solo-ic').textContent='⏸'; }
+  // make sure audio + loop are running
+  ensureMusic();
+  resetChainNeutral();
+  // run the solo effect
+  const fn = (SOLO_FNS[sceneId]||{})[i];
+  if(fn){ try{ new Function('N','ramp','dB2lin','soloRamp','soloComp','soloEQ','soloSend','soloFlanger','soloCrusher','soloPhase','soloPan','soloLP','soloHP', fn)(N,ramp,dB2lin,soloRamp,soloComp,soloEQ,soloSend,soloFlanger,soloCrusher,soloPhase,soloPan,soloLP,soloHP); }catch(e){ console.log(e); } }
+  // badge → show what's soloing
+  const badge = document.getElementById('audioBadge');
+  const lbl = document.querySelector('#audioBadge .ab-label');
+  const bulletText = (BULLETS[sceneId] && BULLETS[sceneId][i]) ? BULLETS[sceneId][i].text.replace(/^Hear it:\s*/i,'') : '';
+  if(lbl){ lbl.dataset.orig = lbl.dataset.orig || lbl.textContent; lbl.textContent = 'Solo — ' + bulletText; }
+  if(badge) badge.classList.add('active');
+}
+function endSolo(resumeVoice){
+  if(!soloActive) return;
+  soloActive = false;
+  document.querySelectorAll('.solo-btn.playing').forEach(b=>{ b.classList.remove('playing'); const ic=b.querySelector('.solo-ic'); if(ic) ic.textContent='▶'; });
+  if(soloResetFn){ try{soloResetFn();}catch(e){} soloResetFn=null; }
+  clearSoloIv();
+  resetChainNeutral();
+  const badge = document.getElementById('audioBadge');
+  const lbl = document.querySelector('#audioBadge .ab-label');
+  if(lbl && lbl.dataset.orig){ lbl.textContent = lbl.dataset.orig; }
+  if(badge) badge.classList.remove('active');
+  soloKey = null;
+  // resume the voiceover + bullets where we left off
+  if(resumeVoice && voicePlayer.src && voicePlayer.paused && voicePlayer.currentTime > 0 && !voicePlayer.ended){
+    voicePlayer.play().catch(()=>{});
+    resumeBulletsFrom(voicePlayer.currentTime);
+  }
+}
+
+/* re-arm bullets that haven't appeared yet, based on current audio time */
+function resumeBulletsFrom(curSec){
+  bulletTimers.forEach(clearTimeout); bulletTimers=[];
+  const bs = BULLETS[currentSceneId] || [];
+  bs.forEach((b,i)=>{
+    const when = b.t - curSec;
+    if(when > 0){
+      bulletTimers.push(setTimeout(()=>showBullet(i, b.text, bs), when*1000));
+    }
+  });
+}
+
+/* solo effect helpers — effects MOVE in a loop so they're clearly audible.
+   Each sets soloResetFn to clean up (clear interval + revert). */
+let soloIv = null;
+function clearSoloIv(){ if(soloIv){ clearInterval(soloIv); soloIv=null; } }
+
+function soloRamp(param, downTarget, secs, _unused){
+  // pendulum: ramp down, then back to unity, repeating — audibly louder/quieter
+  let down=false;
+  const cycle=()=>{ down=!down; ramp(param, down?downTarget:1, 1.0); };
+  cycle(); soloIv=setInterval(cycle, 1400);
+  soloResetFn = ()=>{ clearSoloIv(); ramp(param, 1, .3); };
+}
+function soloComp(th,ra,at,re,mk){
+  // toggle compression hard on/off so the level pumping is obvious
+  let on=false;
+  const cycle=()=>{
+    on=!on;
+    if(on){ N.comp.threshold.value=th; N.comp.ratio.value=ra; N.comp.knee.value=2; N.comp.attack.value=at; N.comp.release.value=re; ramp(N.makeup.gain, dB2lin(mk), .2); }
+    else  { N.comp.threshold.value=0; N.comp.ratio.value=1; ramp(N.makeup.gain, 1, .2); }
+  };
+  cycle(); soloIv=setInterval(cycle, 1800);
+  soloResetFn = ()=>{ clearSoloIv(); N.comp.threshold.value=0; N.comp.ratio.value=1; N.makeup.gain.value=1; };
+}
+function soloEQ(band, gain){
+  // sweep the band gain in and out repeatedly
+  let on=false;
+  const cycle=()=>{ on=!on; ramp(N.eq[band].gain, on?gain:0, .7); };
+  cycle(); soloIv=setInterval(cycle, 1600);
+  soloResetFn = ()=>{ clearSoloIv(); ramp(N.eq[band].gain, 0, .3); };
+}
+function soloSend(param, target){
+  // pulse the send wet/dry
+  let on=false;
+  const cycle=()=>{ on=!on; ramp(param, on?target:0, .8); };
+  cycle(); soloIv=setInterval(cycle, 1900);
+  soloResetFn = ()=>{ clearSoloIv(); ramp(param, 0, .5); };
+}
+function soloFlanger(){ flangerOn(); soloResetFn = ()=>{ flangerOff(); }; }
+function soloCrusher(){
+  // toggle crusher on/off so you hear clean vs crushed
+  let on=false;
+  const cycle=()=>{ on=!on; if(on) crusherOn(); else crusherOff(); };
+  cycle(); soloIv=setInterval(cycle, 1800);
+  soloResetFn = ()=>{ clearSoloIv(); crusherOff(); };
+}
+function soloPhase(){
+  // toggle cancellation on/off: silence then full, repeating
+  N.phaseDemoGain.gain.setValueAtTime(1, actx.currentTime);
+  let cancel=false;
+  const cycle=()=>{ cancel=!cancel; N.phaseDemoInv.gain.setValueAtTime(cancel?-1:1, actx.currentTime); };
+  cycle(); soloIv=setInterval(cycle, 1800);
+  soloResetFn = ()=>{ clearSoloIv(); N.phaseDemoGain.gain.setTargetAtTime(0,actx.currentTime,.1); N.phaseDemoInv.gain.setValueAtTime(1,actx.currentTime); };
+}
+function soloPan(){
+  if(!N.pan.pan){ return; }
+  let dir=-1; ramp(N.pan.pan,-1,.6);
+  soloIv=setInterval(()=>{ dir*=-1; ramp(N.pan.pan, dir, 1.2); }, 1300);
+  soloResetFn = ()=>{ clearSoloIv(); ramp(N.pan.pan,0,.3); };
+}
+function soloLP(){
+  // sweep low-pass closed and open, repeating — gets dull then bright
+  let closed=false;
+  const cycle=()=>{ closed=!closed; ramp(N.lp.frequency, closed?350:20000, 1.1); };
+  cycle(); soloIv=setInterval(cycle, 1500);
+  soloResetFn = ()=>{ clearSoloIv(); N.lp.frequency.setTargetAtTime(20000, actx.currentTime, .2); };
+}
+function soloHP(){
+  // sweep high-pass up and down, repeating — thins out then full
+  let up=false;
+  const cycle=()=>{ up=!up; ramp(N.hp.frequency, up?1400:20, 1.1); };
+  cycle(); soloIv=setInterval(cycle, 1500);
+  soloResetFn = ()=>{ clearSoloIv(); N.hp.frequency.setTargetAtTime(20, actx.currentTime, .2); };
 }
 
 placeSpot();
@@ -1040,6 +1283,14 @@ buildHotspots();
 buildPips();
 applyLayout();
 refreshProgress();
+document.querySelectorAll("#introPanel .ip-modules li").forEach(li=>{
+  li.style.cursor="pointer";
+  li.addEventListener("click", ()=>{
+    const id=li.getAttribute("data-mod");
+    const idx=SCENES.findIndex(s=>s.id===id);
+    if(idx>=0){ if(id==="fx"){ setFxView(true); setTimeout(()=>openScene(idx),450); } else openScene(idx); }
+  });
+});
 
 /* =====================================================================
    WEB AUDIO ENGINE, the background loop runs through a real effect
@@ -1081,7 +1332,7 @@ async function initAudio(){
   setCompNeutral();
   N.makeup = actx.createGain();
   const eqDefs = [[61,"lowshelf"],[500,"peaking"],[4800,"peaking"],[12000,"highshelf"]];
-  N.eq = eqDefs.map(([f,t])=>{ const b=actx.createBiquadFilter(); b.type=t; b.frequency.value=f; b.Q.value=1; b.gain.value=0; return b; });
+  N.eq = eqDefs.map(([f,t])=>{ const b=actx.createBiquadFilter(); b.type=t; b.frequency.value=f; b.Q.value=2.5; b.gain.value=0; return b; });
   N.pump = actx.createGain();
   N.chVol = actx.createGain();
   N.pan = actx.createStereoPanner ? actx.createStereoPanner() : actx.createGain();
@@ -1108,6 +1359,10 @@ async function initAudio(){
   N.src = actx.createBufferSource(); N.src.buffer = buf; N.src.loop = true;
   N.src.connect(N.gainKnob); N.gainKnob.connect(N.phase); N.phase.connect(N.hp);
   N.buf = buf;
+  /* parallel source for the phase-cancellation demo (muted by default) */
+  N.phaseDemoGain = actx.createGain(); N.phaseDemoGain.gain.value = 0;
+  N.phaseDemoInv  = actx.createGain(); N.phaseDemoInv.gain.value = 1;  /* flips to -1 to cancel */
+  N.phaseDemoGain.connect(N.phaseDemoInv); N.phaseDemoInv.connect(N.chVol);
 }
 function setCompNeutral(){
   N.comp.threshold.value = 0; N.comp.ratio.value = 1; N.comp.knee.value = 0;
@@ -1116,7 +1371,13 @@ function setCompNeutral(){
 async function ensureMusic(){
   await initAudio();
   if(actx.state === "suspended") await actx.resume();
-  if(!musicStarted){ N.src.start(); musicStarted = true; }
+  if(!musicStarted){
+    const t0 = actx.currentTime + 0.05;
+    N.src.start(t0);
+    N.phaseDemoSrc = actx.createBufferSource(); N.phaseDemoSrc.buffer = N.buf; N.phaseDemoSrc.loop = true;
+    N.phaseDemoSrc.connect(N.phaseDemoGain); N.phaseDemoSrc.start(t0);
+    musicStarted = true;
+  }
   document.getElementById("musicBtn").classList.toggle("on", musicOn);
 }
 function toggleMusic(){
@@ -1126,7 +1387,7 @@ function toggleMusic(){
   if(musicOn) ensureMusic();
 }
 /* duck the music under the voiceover */
-voicePlayer.addEventListener("play",  ()=>{ if(N) N.duck.gain.setTargetAtTime(.32, actx.currentTime, .15); });
+voicePlayer.addEventListener("play",  ()=>{ if(N) N.duck.gain.setTargetAtTime(.6, actx.currentTime, .15); });
 const unduck = ()=>{ if(N) N.duck.gain.setTargetAtTime(1, actx.currentTime, .4); };
 voicePlayer.addEventListener("pause", unduck);
 voicePlayer.addEventListener("ended", unduck);
@@ -1175,6 +1436,9 @@ function applyComp(){
 }
 
 let demoTimers = [];
+/* tracked setTimeout — every demo-internal delay goes through this so
+   clearDemo() can cancel it. Prevents effects bleeding into the next module. */
+function dTO(fn, ms){ const id = setTimeout(fn, ms); demoTimers.push(id); return id; }
 function clearDemo(){
   demoTimers.forEach(clearTimeout); demoTimers = [];
   if(pumpTimer) setPumpDemo(false);
@@ -1182,11 +1446,14 @@ function clearDemo(){
 function runDemo(steps, doneLabel){
   clearDemo();
   const status = document.getElementById("demoStatus");
+  const badge = document.getElementById("audioBadge");
   steps.forEach(s=>{
     demoTimers.push(setTimeout(()=>{
       if(s.label) status.textContent = s.label;
       if(s.fn) s.fn();
+      if(badge) badge.classList.add("active");
     }, s.at));
+    demoTimers.push(setTimeout(()=>{ if(badge) badge.classList.remove("active"); }, s.at + 1800));
   });
   const last = Math.max(...steps.map(s=>s.at));
   demoTimers.push(setTimeout(()=>{ status.textContent = doneLabel || "Demo finished, replay anytime."; }, last + 2200));
@@ -1238,33 +1505,40 @@ function crusherOff(){
 const DEMO_SEQS = {
   gain: ()=>runDemo([
     { at:8170,  label:"Gain down…",          fn:()=>ramp(N.gainKnob.gain, dB2lin(-14), .5) },
-    { at:10120, label:"Gain up, then back.",  fn:()=>{ ramp(N.gainKnob.gain, dB2lin(10), .5); setTimeout(()=>ramp(N.gainKnob.gain, 1, .8), 1800); } },
-    { at:18460, label:"Phase invert…",        fn:()=>{ ramp(N.phase.gain, -1, .08); setTimeout(()=>ramp(N.phase.gain, 1, .08), 2500); } },
-    { at:22500, label:"Lowpass sweep…",       fn:()=>{ ramp(N.lp.frequency, 300, 1.8); setTimeout(()=>ramp(N.lp.frequency, 20000, 1.2), 2200); } },
-    { at:26380, label:"Highpass sweep…",      fn:()=>{ ramp(N.hp.frequency, 1200, 1.8); setTimeout(()=>ramp(N.hp.frequency, 20, 1.2), 2200); } }
+    { at:10120, label:"Gain up, then back.",  fn:()=>{ ramp(N.gainKnob.gain, dB2lin(10), .5); dTO(()=>ramp(N.gainKnob.gain, 1, .8), 1800); } },
+    { at:18460, label:"Two identical signals — one inverted = silence…", fn:()=>{
+        N.phaseDemoGain.gain.setValueAtTime(1, actx.currentTime);
+        N.phaseDemoInv.gain.setValueAtTime(-1, actx.currentTime);
+        setTimeout(()=>{
+          N.phaseDemoInv.gain.setValueAtTime(1, actx.currentTime);
+          dTO(()=>N.phaseDemoGain.gain.setTargetAtTime(0, actx.currentTime, .1), 1500);
+        }, 2200);
+      } },
+    { at:22500, label:"Lowpass sweep…",       fn:()=>{ ramp(N.lp.frequency, 300, 1.8); dTO(()=>ramp(N.lp.frequency, 20000, 1.2), 2200); } },
+    { at:26380, label:"Highpass sweep…",      fn:()=>{ ramp(N.hp.frequency, 1200, 1.8); dTO(()=>ramp(N.hp.frequency, 20, 1.2), 2200); } }
   ]),
   compressor: ()=>runDemo([
-    { at:4030,  label:"Threshold — compression kicks in…",  fn:()=>{ N.comp.threshold.value=-40; N.comp.ratio.value=2; N.comp.knee.value=6; N.comp.attack.value=.01; N.comp.release.value=.15; N.makeup.gain.value=dB2lin(4); } },
-    { at:7050,  label:"Ratio up — heavier squash…",         fn:()=>{ N.comp.ratio.value=12; } },
-    { at:11060, label:"Fast attack — transients flattened.", fn:()=>{ N.comp.attack.value=.001; } },
-    { at:12880, label:"Slow release — pumping effect.",      fn:()=>{ N.comp.release.value=.6; } },
-    { at:16110, label:"Makeup gain — level restored.",       fn:()=>{ N.makeup.gain.value=dB2lin(8); } },
+    { at:4030,  label:"Threshold — heavy compression kicks in…",  fn:()=>{ N.comp.threshold.value=-50; N.comp.ratio.value=20; N.comp.knee.value=2; N.comp.attack.value=.003; N.comp.release.value=.25; N.makeup.gain.value=dB2lin(12); } },
+    { at:7050,  label:"Ratio maxed — total squash…",         fn:()=>{ N.comp.ratio.value=20; N.comp.threshold.value=-55; N.makeup.gain.value=dB2lin(16); } },
+    { at:11060, label:"Instant attack — transients gone.",   fn:()=>{ N.comp.attack.value=.0005; } },
+    { at:12880, label:"Slow release — heavy pumping.",       fn:()=>{ N.comp.release.value=.9; } },
+    { at:16110, label:"Makeup gain — slammed back up.",      fn:()=>{ N.makeup.gain.value=dB2lin(20); } },
     { at:27290, label:"Sidechain pump…",                     fn:()=>setPumpDemo(true) }
   ]),
   eq: ()=>runDemo([
-    { at:9480,  label:"Band 1 — low shelf boost/cut…",    fn:()=>{ ramp(N.eq[0].gain,-15,.7); setTimeout(()=>ramp(N.eq[0].gain,0,.7),1800); } },
-    { at:12330, label:"Band 2 — mid cut…",                fn:()=>{ ramp(N.eq[1].gain,-12,.7); setTimeout(()=>ramp(N.eq[1].gain,0,.7),1800); } },
-    { at:15430, label:"Band 3 — presence boost…",         fn:()=>{ ramp(N.eq[2].gain,10,.7); setTimeout(()=>ramp(N.eq[2].gain,0,.7),1800); } }
+    { at:9480,  label:"Band 1 — bass pulled out…", fn:()=>{ N.eq[0].gain.value=0; ramp(N.eq[0].gain,-30,.6); dTO(()=>ramp(N.eq[0].gain,0,.6),2400); } },
+    { at:12330, label:"Band 2 — mids scooped out…",           fn:()=>{ N.eq[1].gain.value=0; ramp(N.eq[1].gain,-30,.5); dTO(()=>ramp(N.eq[1].gain,18,.6),1100); dTO(()=>ramp(N.eq[1].gain,0,.6),2400); } },
+    { at:15430, label:"Band 3 — presence cranked…",           fn:()=>{ N.eq[2].gain.value=0; ramp(N.eq[2].gain,24,.5); dTO(()=>ramp(N.eq[2].gain,-24,.6),1100); dTO(()=>ramp(N.eq[2].gain,0,.6),2400); } }
   ]),
   fx: ()=>runDemo([
-    { at:13770, label:"Reverb send up…",   fn:()=>{ ramp(N.revSend.gain,.85,1.2); setTimeout(()=>ramp(N.revSend.gain,0,1),2500); } },
-    { at:15110, label:"Delay send up…",    fn:()=>{ ramp(N.dlySend.gain,.7,1.2); setTimeout(()=>ramp(N.dlySend.gain,0,1),2500); } },
-    { at:17750, label:"Flanger effect…",   fn:()=>{ flangerOn(); setTimeout(()=>flangerOff(),2500); } },
-    { at:20380, label:"BitCrusher…",       fn:()=>{ crusherOn(); setTimeout(()=>crusherOff(),2500); } }
+    { at:13770, label:"Reverb send up…",   fn:()=>{ ramp(N.revSend.gain,.85,1.2); dTO(()=>ramp(N.revSend.gain,0,1),2500); } },
+    { at:15110, label:"Delay send up…",    fn:()=>{ ramp(N.dlySend.gain,.7,1.2); dTO(()=>ramp(N.dlySend.gain,0,1),2500); } },
+    { at:17750, label:"Flanger effect…",   fn:()=>{ flangerOn(); dTO(()=>flangerOff(),2500); } },
+    { at:20380, label:"BitCrusher…",       fn:()=>{ crusherOn(); dTO(()=>crusherOff(),2500); } }
   ]),
   volume: ()=>runDemo([
-    { at:5470, label:"Volume down then up…",  fn:()=>{ ramp(N.chVol.gain,dB2lin(-16),.6); setTimeout(()=>ramp(N.chVol.gain,1,.6),2000); } },
-    { at:8260, label:"Pan left to right…",    fn:()=>{ if(N.pan.pan){ ramp(N.pan.pan,-1,.6); setTimeout(()=>ramp(N.pan.pan,1,.8),1500); setTimeout(()=>ramp(N.pan.pan,0,.6),3500); } } }
+    { at:5470, label:"Volume down then up…",  fn:()=>{ ramp(N.chVol.gain,dB2lin(-16),.6); dTO(()=>ramp(N.chVol.gain,1,.6),2000); } },
+    { at:8260, label:"Pan left to right…",    fn:()=>{ if(N.pan.pan){ ramp(N.pan.pan,-1,.6); dTO(()=>ramp(N.pan.pan,1,.8),1500); dTO(()=>ramp(N.pan.pan,0,.6),3500); } } }
   ])
 };
 
@@ -1273,8 +1547,8 @@ function buildDemo(scene){
   if(!actx || !DEMO_SEQS[scene.id]){ panel.style.display = "none"; return; }
   panel.style.display = "block";
   document.getElementById("demoStatus").textContent = "Listen to the loop…";
-  const ind = document.getElementById("audioIndicator");
-  if(ind){ ind.style.opacity=0; setTimeout(()=>ind.style.opacity=1, 800); }
+  const badge = document.getElementById("audioBadge");
+  if(badge) badge.classList.remove("active");
   demoTimers.push(setTimeout(()=>DEMO_SEQS[scene.id](), 0));
 }
 function replayDemo(){
@@ -1283,14 +1557,22 @@ function replayDemo(){
 function resetChainNeutral(){
   if(!N) return;
   clearDemo();
+  if(typeof clearSoloIv === "function") clearSoloIv();
   N.gainKnob.gain.setTargetAtTime(1, actx.currentTime, .05);
   if(N.phase) N.phase.gain.setTargetAtTime(1, actx.currentTime, .05);
+  if(N.phaseDemoGain){ N.phaseDemoGain.gain.setTargetAtTime(0, actx.currentTime, .05); N.phaseDemoInv.gain.setValueAtTime(1, actx.currentTime); }
   N.hp.frequency.setTargetAtTime(20, actx.currentTime, .05);
   N.lp.frequency.setTargetAtTime(20000, actx.currentTime, .05);
   compState.on = false; applyComp(); setPumpDemo(false);
   N.eq.forEach(b=>b.gain.setTargetAtTime(0, actx.currentTime, .05));
   N.revSend.gain.setTargetAtTime(0, actx.currentTime, .05);
   N.dlySend.gain.setTargetAtTime(0, actx.currentTime, .05);
+  /* flush the delay feedback tail so echoes don't ring into the next effect */
+  if(N.dlyFb){
+    const fbWas = N.dlyFb.gain.value;
+    N.dlyFb.gain.setValueAtTime(0, actx.currentTime);
+    setTimeout(()=>{ if(N.dlyFb) N.dlyFb.gain.setValueAtTime(fbWas, actx.currentTime); }, 400);
+  }
   N.chVol.gain.setTargetAtTime(1, actx.currentTime, .05);
   if(N.pan.pan) N.pan.pan.setTargetAtTime(0, actx.currentTime, .05);
   flangerOff(); crusherOff();
