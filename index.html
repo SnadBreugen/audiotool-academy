@@ -889,22 +889,37 @@ function startExplore(){
   if(new URLSearchParams(location.search).has("record")){ startCinema(); return; }
   document.getElementById("start").style.display = "none";
   document.getElementById("stage").classList.add("active");
-  ensureMusic();
   mode = "explore";
   pbPlaying = true; updatePbPlay(); pbShow();
   { const ms=document.getElementById("modeSwitch"); if(ms) ms.textContent = "▶ Switch to Cinema"; }
   setTimeout(()=>document.getElementById("stage").classList.add("revealed"), 350);
   setTimeout(centerChannel, 120);
   showIntroPanel();
-  if(INTRO_AUDIO){
-    audioDriven = true;
-    voicePlayer.src = INTRO_AUDIO;
-    voicePlayer.onended = ()=>{ audioDriven = false; stopCueWatch(); };
-    voicePlayer.play().catch(()=>{});
-    startCueWatch();
-  } else {
-    /* intro panel carries the text */
-  }
+  // gentle entrance: music fades in first, then the voice eases in over it
+  ensureMusic().then(()=>{
+    if(N){
+      N.master.gain.cancelScheduledValues(actx.currentTime);
+      N.master.gain.setValueAtTime(0, actx.currentTime);
+      N.master.gain.linearRampToValueAtTime(pbMutedMusic?0:musicLevel, actx.currentTime + 1.3);
+    }
+    if(INTRO_AUDIO){
+      audioDriven = true;
+      voicePlayer.src = INTRO_AUDIO;
+      voicePlayer.volume = 0;
+      voicePlayer.onended = ()=>{ audioDriven = false; stopCueWatch(); };
+      // let the music establish for ~0.9s, then bring the voice in with a short fade
+      setTimeout(()=>{
+        voicePlayer.play().catch(()=>{});
+        startCueWatch();
+        let v = 0;
+        const fade = setInterval(()=>{
+          v = Math.min(voiceLevel, v + voiceLevel/12);
+          voicePlayer.volume = pbMutedVoice ? 0 : v;
+          if(v >= voiceLevel) clearInterval(fade);
+        }, 45);
+      }, 900);
+    }
+  });
   refreshProgress();
 }
 
