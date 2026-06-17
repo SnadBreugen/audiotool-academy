@@ -412,8 +412,8 @@
   #pbPlay:hover{ filter:brightness(1.1); color:#0c0e12; }
   .pb-chapters{ display:flex; gap:8px; align-items:center; }
   .pb-chapter{
-    position:relative; display:flex; flex-direction:column; gap:6px; align-items:flex-start;
-    padding:9px 16px; border-radius:12px; border:1px solid transparent;
+    position:relative; display:flex; flex-direction:column; gap:3px; align-items:flex-start;
+    padding:11px 16px; border-radius:12px; border:1px solid transparent;
     background:rgba(255,255,255,.03); cursor:pointer; transition:all .2s; min-width:118px; overflow:hidden;
   }
   .pb-chapter:hover{ background:rgba(255,255,255,.08); transform:translateY(-1px); }
@@ -425,12 +425,9 @@
   .pb-chapter .pc-name{ font-family:var(--font-info); font-size:12.5px; color:#dfe3ea; white-space:nowrap; transition:color .2s; }
   .pb-chapter.active .pc-name{ color:#fff; font-weight:600; }
   .pb-chapter.cued .pc-name{ color:#fff; }
-  .pb-chapter .pc-bar{ height:3px; width:100%; background:rgba(255,255,255,.1); border-radius:3px; overflow:hidden; }
-  .pb-chapter .pc-bar span{ display:block; height:100%; width:0%; background:var(--accent,#28E5FF); transition:width .2s linear; }
   .pb-sep{ width:1px; height:34px; background:var(--line); flex-shrink:0; }
   .pb-vol{ display:flex; align-items:center; }
-  .pb-vol .pb-slider{ width:0; overflow:hidden; transition:width .25s, margin .25s; }
-  .pb-vol:hover .pb-slider, .pb-vol:focus-within .pb-slider{ width:88px; margin-left:8px; }
+  .pb-vol .pb-slider{ width:88px; margin-left:8px; }
   .pb-vol input[type=range]{ width:88px; accent-color:var(--accent,#28E5FF); cursor:pointer; }
   @media (max-width:760px){ #playbar{ display:none; } }
 
@@ -501,8 +498,6 @@
   <div id="playbar">
     <button class="pb-btn" id="pbPlay" onclick="pbToggle()" title="Play / Pause">▶</button>
     <button class="pb-btn" id="pbRestart" onclick="pbRestart()" title="Restart lesson">↺</button>
-    <div class="pb-chapters" id="pbChapters"></div>
-    <div class="pb-sep"></div>
     <div class="pb-vol" id="pbVoiceVol">
       <button class="pb-btn" title="Voice volume" onclick="pbToggleMute('voice')"><span id="pbVoiceIc">🗣</span></button>
       <div class="pb-slider"><input type="range" min="0" max="1" step="0.02" value="1" id="pbVoiceRange" oninput="pbSetVoiceVol(this.value)"></div>
@@ -701,10 +696,7 @@ function litChapterCue(i){
   const c = document.getElementById("pc-"+i);
   if(c){ c.classList.add("cued"); setTimeout(()=>c.classList.remove("cued"), 1400); }
 }
-function litIntroModule(i){
-  const items=document.querySelectorAll("#introPanel .ip-modules li");
-  if(items[i]) items[i].classList.add("lit");
-}
+function litIntroModule(i){ const items=document.querySelectorAll("#introPanel .ip-modules li"); if(items[i]) items[i].classList.add("lit"); }
 function clearLit(){ SCENES.forEach(s=>document.getElementById("hs-"+s.id).classList.remove("lit")); }
 function startCueWatch(){
   stopCueWatch();
@@ -1634,7 +1626,7 @@ function buildChapters(){
     const c = document.createElement("div");
     c.className = "pb-chapter"; c.id = "pc-"+i;
     c.onclick = ()=>pbGotoChapter(i);
-    c.innerHTML = `<span class="pc-num">${i+1}</span><span class="pc-name">${s.title}</span><span class="pc-bar"><span id="pcbar-${i}"></span></span>`;
+    c.innerHTML = `<span class="pc-num">${i+1}</span><span class="pc-name">${s.title}</span>`;
     wrap.appendChild(c);
   });
 }
@@ -1657,10 +1649,10 @@ function pbToggle(){
   pbPlaying = !pbPlaying; updatePbPlay();
   if(!pbPlaying){
     voicePlayer.pause();
-    if(N) N.master.gain.setTargetAtTime(0, actx.currentTime, .1);
+    if(N) N.master.gain.setTargetAtTime(0, actx.currentTime, .015);
   } else {
     if(audioDriven && voicePlayer.src && voicePlayer.paused) voicePlayer.play().catch(()=>{});
-    if(N) N.master.gain.setTargetAtTime(pbMutedMusic?0:musicLevel, actx.currentTime, .1);
+    if(N) N.master.gain.setTargetAtTime(pbMutedMusic?0:musicLevel, actx.currentTime, .04);
   }
 }
 function updatePbPlay(){ const b=document.getElementById("pbPlay"); if(b) b.textContent = pbPlaying ? "⏸" : "▶"; }
@@ -1701,13 +1693,7 @@ function pbToggleMute(which){
     pbSetMusicVol(r.value);
   }
 }
-function pbTickProgress(){
-  if(current>=0 && audioDriven && voicePlayer.duration){
-    const bar=document.getElementById("pcbar-"+current);
-    if(bar) bar.style.width = Math.min(100,(voicePlayer.currentTime/voicePlayer.duration*100)) + "%";
-  }
-  requestAnimationFrame(pbTickProgress);
-}
+function pbTickProgress(){ /* progress bar removed (redundant) */ }
 let pbHideTimer=null;
 function pbShow(){
   const bar=document.getElementById("playbar"); if(!bar) return;
